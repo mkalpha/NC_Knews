@@ -24,4 +24,20 @@ function createCommentsDictionary(arr) {
   return result;
 }
 
-module.exports = { createArticles, createCommentsDictionary };
+function commentsIdReference(dictionary, arr) {
+  arr = createArticles(arr);
+
+  return arr.map((comment) => {
+    const {
+      body, belongs_to, created_by, votes, created_at,
+    } = comment;
+
+    const author = created_by;
+
+    return {
+      body, votes, created_at, author, article_id: dictionary[belongs_to],
+    };
+  });
+}
+
+module.exports = { createArticles, createCommentsDictionary, commentsIdReference };

@@ -1,7 +1,7 @@
 const {
   topicData, userData, articleData, commentData,
 } = require('../db/data');
-const { createArticles, createCommentsDictionary } = require('../db/utils');
+const { createArticles, createCommentsDictionary, commentsIdReference } = require('../db/utils');
 
 exports.seed = function (knex, Promise) {
   return knex.migrate.rollback()
@@ -13,7 +13,9 @@ exports.seed = function (knex, Promise) {
       return knex.insert(articles).into('articles').returning('*')
         .then((articleRows) => {
           const dictionary = createCommentsDictionary(articleRows);
-          console.log(dictionary);
+          const idReference = commentsIdReference(dictionary, commentData);
+          // console.log(idReference);
+          return knex.insert(idReference).into('comments').returning('*');
         });
     });
 };
