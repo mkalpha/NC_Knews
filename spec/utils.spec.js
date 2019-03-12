@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { createArticles } = require('../db/utils');
+const { createArticles, createCommentsDictionary } = require('../db/utils');
 
 
 describe('createArticles', () => {
@@ -54,5 +54,15 @@ describe('createArticles', () => {
       created_at: '2014-11-16',
     }];
     expect(createArticles(input)).to.eql(expected);
+  });
+  it('Test that for an array of one object it will return an object with the article name as a key and the id as the pair', () => {
+    const input = [{ article_id: 1, title: "They're not exactly dogs, are they?" }];
+    const expected = { "They're not exactly dogs, are they?": 1 };
+    expect(createCommentsDictionary(input)).to.eql(expected);
+  });
+  it('Test that if it receives an array with multiple objects it will return an object with multiple key vale pairs ', () => {
+    const input = [{ article_id: 1, title: "They're not exactly dogs, are they?" }, { article_id: 2, title: 'test Title' }];
+    const expected = { "They're not exactly dogs, are they?": 1, 'test Title': 2 };
+    expect(createCommentsDictionary(input)).to.eql(expected);
   });
 });

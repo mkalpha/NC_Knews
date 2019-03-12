@@ -1,6 +1,5 @@
 function createArticles(arr) {
   arr.forEach((item) => {
-    
     let createdDate = item.created_at;
     createdDate = new Date(createdDate);
     const psqlYear = createdDate.getFullYear();
@@ -12,8 +11,17 @@ function createArticles(arr) {
 
     item.created_at = psqlDate;
   });
-  
+
   return arr;
 }
 
-module.exports = { createArticles };
+function createCommentsDictionary(arr) {
+  const result = {};
+  arr.forEach((item, index) => {
+    result[item.title] = item.article_id;
+  });
+
+  return result;
+}
+
+module.exports = { createArticles, createCommentsDictionary };
