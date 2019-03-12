@@ -32,14 +32,9 @@ describe('/api', () => {
           expect(res.body).to.have.keys('slug', 'description');
         });
     });
-    // it('POST tests that a non unique slug will not be added to the topics table', () => {
-    //     const topicToPost = {
-    //         slug: 'mitch',
-    //         descrription: 'test description'
-    //     };
-    //     return request.post('/api/topics')
-    //         .send(topicToPost)
-    //         .expect(400)
-    // });
+  });
+  describe('/api/articles', () => {
+    it('GET status 200. returns an array', () => request.get('/api/articles')
+      .expect(200));
   });
 });
