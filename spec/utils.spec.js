@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'test';
 const { expect } = require('chai');
 const { createArticles, createCommentsDictionary, commentsIdReference } = require('../db/utils');
 
