@@ -185,4 +185,16 @@ describe('/api', () => {
         expect(res.body.users[0]).to.have.keys('username', 'avatar_url', 'name');
       }));
   });
+  it('POST should respond with the posted user', () => {
+    const newUser = {
+      username: 'testUser',
+      avatar_url: 'http://image.com/picture.jpg',
+      name: 'Test Name',
+    };
+    return request.post('/api/users').send(newUser)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.user[0]).to.have.keys('username', 'avatar_url', 'name');
+      });
+  });
 });
