@@ -177,4 +177,12 @@ describe('/api', () => {
     it('DELETE gives 204', () => request.delete('/api/comments/1')
       .expect(204));
   });
+  describe('/api/user', () => {
+    it('GET 200 should return an array of objects of all the users', () => request.get('/api/users')
+      .expect(200)
+      .then((res) => {
+        expect(res.body.users).to.have.length(3);
+        expect(res.body.users[0]).to.have.keys('username', 'avatar_url', 'name');
+      }));
+  });
 });
