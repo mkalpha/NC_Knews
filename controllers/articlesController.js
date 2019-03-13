@@ -1,4 +1,6 @@
-const { fetchAllArticles, postArticle, fetchSingleArticle } = require('../models/articlesModel');
+const {
+  fetchAllArticles, postArticle, fetchSingleArticle, patchArticle,
+} = require('../models/articlesModel');
 
 exports.sendAllArticles = (req, res, next) => {
   const { author, topic } = req.query; // Same as req.query = { author : 'butter_bridge' }
@@ -26,7 +28,15 @@ exports.sendArticle = (req, res, next) => {
   const article = req.params;
   fetchSingleArticle(article)
     .then((returnedArticle) => {
-      console.log(returnedArticle);
       res.status(200).send({ returnedArticle });
+    });
+};
+
+exports.changeArticle = (req, res, next) => {
+  const article_id = req.params;
+  const votes = req.body;
+  patchArticle(votes, article_id)
+    .then((returnedArticle) => {
+      res.status(201).send({ returnedArticle });
     });
 };

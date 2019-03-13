@@ -121,4 +121,14 @@ describe('/api', () => {
         });
     });
   });
+  describe('/api/articles PATCH', () => {
+    it('PATCH gives 201  status, updates the article and returns and returns an object as it will appear in the db', () => {
+      const votesObject = { inc_votes: 1 };
+      return request.patch('/api/articles/1').send(votesObject)
+        .expect(201)
+        .then((res) => {
+          expect(res.body.returnedArticle[0].votes).to.eql(101);
+        });
+    });
+  });
 });
