@@ -1,5 +1,5 @@
 const {
-  fetchAllArticles, postArticle, fetchSingleArticle, patchArticle, deleteArticle,
+  fetchAllArticles, postArticle, fetchSingleArticle, patchArticle, deleteArticle, fetchComments,
 } = require('../models/articlesModel');
 
 exports.sendAllArticles = (req, res, next) => {
@@ -46,5 +46,14 @@ exports.removeArticle = (req, res, next) => {
   deleteArticle(article)
     .then(() => {
       res.status(204).send();
+    });
+};
+
+exports.getComments = (req, res, next) => {
+  const article = req.params;
+
+  fetchComments(article)
+    .then((articleComments) => {
+      res.status(200).send({ articleComments });
     });
 };

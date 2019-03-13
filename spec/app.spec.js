@@ -135,4 +135,11 @@ describe('/api', () => {
     it('DELETE gives 204', () => request.delete('/api/articles/1')
       .expect(204));
   });
+  describe('/api/articles/comments', () => {
+    it.only('GET status 200 it should return the comments for an article', () => request.get('/api/articles/1/comments')
+      .expect(200)
+      .then((res) => {
+        expect(res.body.articleComments).to.have.length(13);
+      }));
+  });
 });

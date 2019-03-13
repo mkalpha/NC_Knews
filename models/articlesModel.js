@@ -26,3 +26,5 @@ exports.patchArticle = (votes, article_id) => connection('articles').where('arti
 
 exports.deleteArticle = (article => connection('articles').where('article_id', article.article_id).del()
   .catch(err => console.log(err)));
+
+exports.fetchComments = (article => connection('comments').select('comment_id', 'votes', 'created_at', 'author', 'body', 'article_id').where('article_id', article.article_id).returning('*'));
