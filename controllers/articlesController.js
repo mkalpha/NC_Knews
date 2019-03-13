@@ -1,6 +1,8 @@
 const { fetchAllArticles, postArticle } = require('../models/articlesModel');
 
 exports.sendAllArticles = (req, res, next) => {
+
+  console.log(req.params);
   const { author, topic } = req.query; // Same as req.query = { author : 'butter_bridge' }
   const whereConditions = {};
   if (author) whereConditions['articles.author'] = author;

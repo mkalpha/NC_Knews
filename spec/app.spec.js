@@ -100,6 +100,13 @@ describe('/api', () => {
           expect(res.body[11].comment_count).to.eql('13');
         });
     });
+    it('GET Status 200 params article_id', () => {
+      return request.get('/api/articles/1')
+      .expect(200)
+      .then((res) => {
+        console.log(res);
+      });
+    })
   });
   describe('/api/articles POST', () => {
     it('POST gives 201 status, returns the new object as it is in db', () => {
