@@ -174,7 +174,7 @@ describe('/api', () => {
           expect(res.body.returnedComment[0].votes).to.eql(1016);
         });
     });
-    it.only('DELETE gives 204', () => request.delete('/api/comment/1')
+    it('DELETE gives 204', () => request.delete('/api/comments/1')
       .expect(204));
   });
 });

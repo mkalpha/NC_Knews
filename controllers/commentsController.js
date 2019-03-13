@@ -12,12 +12,9 @@ exports.changeComment = (req, res, next) => {
 };
 
 exports.removeComment = (req, res, next) => {
-    console.log('in comment controller delete');
-    //get comment params
-    const comment = req.params;
-    deleteComment(comment)
+  const comment = req.params;
+  deleteComment(comment)
     .then(() => {
-        console.log('back in controller')
-        res.status(204).send()
-    })
+      res.status(204).send();
+    });
 };
