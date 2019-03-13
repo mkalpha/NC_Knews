@@ -3,7 +3,7 @@ const {
 } = require('../models/articlesModel');
 
 exports.sendAllArticles = (req, res, next) => {
-  const { author, topic } = req.query; // Same as req.query = { author : 'butter_bridge' }
+  const { author, topic } = req.query;
   const whereConditions = {};
   if (author) whereConditions['articles.author'] = author;
   if (topic) whereConditions.topic = topic;
@@ -51,8 +51,9 @@ exports.removeArticle = (req, res, next) => {
 
 exports.getComments = (req, res, next) => {
   const article = req.params;
-
-  fetchComments(article)
+  const sort = req.query.sortby || 'created_at';
+  const order = req.query.order || 'desc';
+  fetchComments(article, sort, order)
     .then((articleComments) => {
       res.status(200).send({ articleComments });
     });

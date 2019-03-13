@@ -136,10 +136,22 @@ describe('/api', () => {
       .expect(204));
   });
   describe('/api/articles/comments', () => {
-    it.only('GET status 200 it should return the comments for an article', () => request.get('/api/articles/1/comments')
+    it('GET status 200 it should return the comments for an article', () => request.get('/api/articles/1/comments')
       .expect(200)
       .then((res) => {
         expect(res.body.articleComments).to.have.length(13);
+      }));
+    it('GET status 200 QUERIES should be able to sort defaults to Date', () => request.get('/api/articles/1/comments?sortby=votes')
+      .expect(200)
+      .then((res) => {
+        expect(res.body.articleComments[0].votes).to.eql(100);
+        expect(res.body.articleComments[12].votes).to.eql(-100);
+      }));
+    it('GET status 200 QUERIES should be able to order by', () => request.get('/api/articles/1/comments?sortby=author&order=asc')
+      .expect(200)
+      .then((res) => {
+        expect(res.body.articleComments[0].votes).to.eql(14);
+        expect(res.body.articleComments[12].votes).to.eql(100);
       }));
   });
 });
