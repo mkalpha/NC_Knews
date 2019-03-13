@@ -1,5 +1,5 @@
 const {
-  fetchAllArticles, postArticle, fetchSingleArticle, patchArticle, deleteArticle, fetchComments,
+  fetchAllArticles, postArticle, fetchSingleArticle, patchArticle, deleteArticle, fetchComments, postComment,
 } = require('../models/articlesModel');
 
 exports.sendAllArticles = (req, res, next) => {
@@ -56,5 +56,18 @@ exports.getComments = (req, res, next) => {
   fetchComments(article, sort, order)
     .then((articleComments) => {
       res.status(200).send({ articleComments });
+    });
+};
+
+exports.addComment = (req, res, next) => {
+  const { username, body } = req.body;
+  const whereConditions = {};
+  whereConditions.article_id = req.params.article_id;
+  whereConditions.author = username;
+  whereConditions.body = body;
+
+  postComment(whereConditions)
+    .then((newComment) => {
+      res.status(201).send({ newComment });
     });
 };

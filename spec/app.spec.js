@@ -153,5 +153,16 @@ describe('/api', () => {
         expect(res.body.articleComments[0].votes).to.eql(14);
         expect(res.body.articleComments[12].votes).to.eql(100);
       }));
+    it('POST Status 201 returns the new object as it is in db', () => {
+      const commentToPost = {
+        body: 'testBody',
+        username: 'butter_bridge',
+      };
+      return request.post('/api/articles/1/comments').send(commentToPost)
+        .expect(201)
+        .then((res) => {
+          expect(res.body.newComment[0]).to.have.keys('comment_id', 'body', 'votes', 'author', 'created_at', 'article_id');
+        });
+    });
   });
 });

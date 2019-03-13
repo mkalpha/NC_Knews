@@ -1,9 +1,11 @@
 const articlesRouter = require('express').Router();
 const {
-  sendAllArticles, addArticle, sendArticle, changeArticle, removeArticle, getComments,
+  sendAllArticles, addArticle, sendArticle, changeArticle, removeArticle, getComments, addComment,
 } = require('../controllers/articlesController');
 
 articlesRouter.get('/:article_id/comments', getComments);
+
+articlesRouter.post('/:article_id/comments', addComment);
 
 articlesRouter.get('/:article_id', sendArticle);
 

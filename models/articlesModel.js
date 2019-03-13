@@ -29,3 +29,5 @@ exports.deleteArticle = (article => connection('articles').where('article_id', a
 
 exports.fetchComments = (article, sort, order) => connection('comments').select('comment_id', 'votes', 'created_at', 'author', 'body', 'article_id').where('article_id', article.article_id).orderBy(sort, order)
   .returning('*');
+
+exports.postComment = comment => connection('comments').insert(comment).returning('*');
