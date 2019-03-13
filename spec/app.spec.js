@@ -131,4 +131,8 @@ describe('/api', () => {
         });
     });
   });
+  describe('/api/articles  DELETE', () => {
+    it('DELETE gives 204', () => request.delete('/api/articles/1')
+      .expect(204));
+  });
 });

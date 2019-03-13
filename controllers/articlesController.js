@@ -1,5 +1,5 @@
 const {
-  fetchAllArticles, postArticle, fetchSingleArticle, patchArticle,
+  fetchAllArticles, postArticle, fetchSingleArticle, patchArticle, deleteArticle,
 } = require('../models/articlesModel');
 
 exports.sendAllArticles = (req, res, next) => {
@@ -38,5 +38,13 @@ exports.changeArticle = (req, res, next) => {
   patchArticle(votes, article_id)
     .then((returnedArticle) => {
       res.status(201).send({ returnedArticle });
+    });
+};
+
+exports.removeArticle = (req, res, next) => {
+  const article = req.params;
+  deleteArticle(article)
+    .then(() => {
+      res.status(204).send();
     });
 };

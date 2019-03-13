@@ -23,3 +23,6 @@ exports.fetchSingleArticle = article => connection.select('articles.author', 'ar
 
 exports.patchArticle = (votes, article_id) => connection('articles').where('article_id', article_id.article_id).increment('votes', votes.inc_votes).returning('*')
   .catch(err => console.log(err));
+
+exports.deleteArticle = (article => connection('articles').where('article_id', article.article_id).del()
+  .catch(err => console.log(err)));

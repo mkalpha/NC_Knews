@@ -5,8 +5,10 @@ exports.up = function (knex, Promise) {
     articlesTable.string('title', 255).notNullable();
     articlesTable.string('body', 2000).notNullable();
     articlesTable.integer('votes').defaultTo(0);
-    articlesTable.string('topic').references('slug').inTable('topics').notNullable();
-    articlesTable.string('author').references('username').inTable('users').notNullable();
+    articlesTable.string('topic').references('slug').inTable('topics').notNullable()
+      .onDelete('CASCADE');
+    articlesTable.string('author').references('username').inTable('users').notNullable()
+      .onDelete('CASCADE');
     articlesTable.date('created_at').defaultTo(knex.fn.now());
   });
 };
