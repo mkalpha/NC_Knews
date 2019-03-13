@@ -1,5 +1,7 @@
 const usersRouter = require('express').Router();
-const { sendAllUsers, sendNewUser } = require('../controllers/usersController');
+const { sendAllUsers, sendNewUser, sendUser } = require('../controllers/usersController');
+
+usersRouter.get('/:username', sendUser);
 
 usersRouter.get('/', sendAllUsers);
 

@@ -197,4 +197,9 @@ describe('/api', () => {
         expect(res.body.user[0]).to.have.keys('username', 'avatar_url', 'name');
       });
   });
+  it('GET 200 should return a single user from params', () => request.get('/api/users/butter_bridge')
+    .expect(200)
+    .then((res) => {
+      expect(res.body.user[0].username).to.eql('butter_bridge');
+    }));
 });
