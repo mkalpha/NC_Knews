@@ -40,9 +40,11 @@ exports.changeArticle = (req, res, next) => {
   const votes = req.body;
 
   if (!votes.inc_votes) {
-    next({ msg: 'Invalid Object Key Should Be "inc_votes"', status: 400 });
-  } else if (!Number.isNaN(votes.inc_votes)) {
+    next({ msg: 'Bad Request: Invalid Object Key Should Be "inc_votes"', status: 400 });
+  } else if (isNaN(votes.inc_votes)) {
     next({ msg: 'Bad Request: Votes Should Be An Integer', status: 400 });
+  } else if (Object.keys(votes).length > 1) {
+    next({ msg: 'Bad Request: Votes Object can only contain one entry', status: 400 });
   } else {
     patchArticle(votes, article_id)
       .then((returnedArticle) => {

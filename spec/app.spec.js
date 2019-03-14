@@ -262,12 +262,17 @@ describe('/api', () => {
     it('PATCH /articles:article_id Status 400 when the is no inc_votes on req.body', () => request.patch('/api/articles/1').send({ Dog: 1 })
       .expect(400)
       .then((res) => {
-        expect(res.body.msg).to.eql('Invalid Object Key Should Be "inc_votes"');
+        expect(res.body.msg).to.eql('Bad Request: Invalid Object Key Should Be "inc_votes"');
       }));
     it('PATCH /articles:article_id Status 400 where the value is invalid', () => request.patch('/api/articles/1').send({ inc_votes: 'cat' })
       .expect(400)
       .then((res) => {
         expect(res.body.msg).to.eql('Bad Request: Votes Should Be An Integer');
+      }));
+    it('PATCH /articles:article_id Status 400 where there is more than one property on the object', () => request.patch('/api/articles/1').send({ inc_votes: 1, name: 'mitch' })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Bad Request: Votes Object can only contain one entry');
       }));
   });
 });
