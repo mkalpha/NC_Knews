@@ -9,11 +9,14 @@ exports.sendAllArticles = (req, res, next) => {
   if (topic) whereConditions.topic = topic;
 
   const sort = req.query.sortby || 'created_at';
-
-  fetchAllArticles(whereConditions, sort).then((articles) => {
-    res.status(200).send(articles);
+  const orderby = req.query.orderby || 'desc';
+  // console.log(whereConditions);
+  // console.log(sort);
+  // console.log(orderby);
+  fetchAllArticles(whereConditions, sort, orderby).then((articles) => {
+    res.status(200).send(articles); // need to destructure this ({ articles }) but will break lots of tests come back to it
   })
-    .catch(err => console.log(err));
+    .catch(next);
 };
 
 exports.addArticle = (req, res, next) => {
@@ -21,7 +24,8 @@ exports.addArticle = (req, res, next) => {
   postArticle(article)
     .then((newArticle) => {
       res.status(201).send({ newArticle });
-    });
+    })
+    .catch(next);
 };
 
 exports.sendArticle = (req, res, next) => {
@@ -29,7 +33,8 @@ exports.sendArticle = (req, res, next) => {
   fetchSingleArticle(article)
     .then((returnedArticle) => {
       res.status(200).send({ returnedArticle });
-    });
+    })
+    .catch(next);
 };
 
 exports.changeArticle = (req, res, next) => {
@@ -38,7 +43,8 @@ exports.changeArticle = (req, res, next) => {
   patchArticle(votes, article_id)
     .then((returnedArticle) => {
       res.status(201).send({ returnedArticle });
-    });
+    })
+    .catch(next);
 };
 
 exports.removeArticle = (req, res, next) => {
@@ -46,7 +52,8 @@ exports.removeArticle = (req, res, next) => {
   deleteArticle(article)
     .then(() => {
       res.status(204).send();
-    });
+    })
+    .catch(next);
 };
 
 exports.getComments = (req, res, next) => {
@@ -56,7 +63,8 @@ exports.getComments = (req, res, next) => {
   fetchComments(article, sort, order)
     .then((articleComments) => {
       res.status(200).send({ articleComments });
-    });
+    })
+    .catch(next);
 };
 
 exports.addComment = (req, res, next) => {
@@ -69,5 +77,6 @@ exports.addComment = (req, res, next) => {
   postComment(whereConditions)
     .then((newComment) => {
       res.status(201).send({ newComment });
-    });
+    })
+    .catch(next);
 };

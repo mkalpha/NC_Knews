@@ -1,15 +1,15 @@
 const connection = require('../db/connection');
 
-exports.fetchAllArticles = (whereConditions, sort, order) => connection
+exports.fetchAllArticles = (whereConditions, sort, orderby) => connection
   .select('articles.author', 'articles.title', 'articles.article_id', 'articles.topic', 'articles.created_at', 'articles.votes')
   .count('comments.article_id as comment_count')
   .from('articles')
   .leftJoin('comments', 'articles.article_id', 'comments.article_id')
   .where(whereConditions)
-  .orderBy(sort, 'asc')
+  .orderBy(sort, orderby)
   .groupBy('articles.article_id')
-  .returning('*')
-  .catch(err => console.log(err));
+  .returning('*');
+
 
 exports.postArticle = article => connection('articles').insert(article).returning('*');
 
@@ -21,8 +21,7 @@ exports.fetchSingleArticle = article => connection.select('articles.author', 'ar
   .groupBy('articles.article_id')
   .returning('*');
 
-exports.patchArticle = (votes, article_id) => connection('articles').where('article_id', article_id.article_id).increment('votes', votes.inc_votes).returning('*')
-  .catch(err => console.log(err));
+exports.patchArticle = (votes, article_id) => connection('articles').where('article_id', article_id.article_id).increment('votes', votes.inc_votes).returning('*');
 
 exports.deleteArticle = (article => connection('articles').where('article_id', article.article_id).del()
   .catch(err => console.log(err)));
