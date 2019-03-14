@@ -5,10 +5,11 @@ exports.changeComment = (req, res, next) => {
   const votes = req.body;
 
   patchComment(votes, comment_id)
+
     .then((returnedComment) => {
       res.status(201).send({ returnedComment });
     })
-    .catch(err => console.log(err));
+    .catch(next);
 };
 
 exports.removeComment = (req, res, next) => {
@@ -16,5 +17,6 @@ exports.removeComment = (req, res, next) => {
   deleteComment(comment)
     .then(() => {
       res.status(204).send();
-    });
+    })
+    .catch(next);
 };

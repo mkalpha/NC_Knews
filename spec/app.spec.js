@@ -284,5 +284,15 @@ describe('/api', () => {
       .then((res) => {
         expect(res.body.msg).to.eql('Bad Request: Order by should be asc or desc');
       }));
+    it('POST /api/articles/1/comment invalid', () => request.post('/api/articles/1/comments').send({})
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Bad Request');
+      }));
+    it('PATCH `/api/comments/:comment_id invalid ID', () => request.patch('/api/comments/A').send({})
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Bad Request');
+      }));
   });
 });
