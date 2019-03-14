@@ -202,4 +202,11 @@ describe('/api', () => {
     .then((res) => {
       expect(res.body.user[0].username).to.eql('butter_bridge');
     }));
+  describe('Error Handling', () => {
+    it.only('Status 404: Testing error handling for a bad route', () => request.get('/bad-route')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).to.eql('Route Not Found');
+      }));
+  });
 });
