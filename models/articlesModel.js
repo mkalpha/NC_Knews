@@ -6,7 +6,7 @@ exports.fetchAllArticles = (whereConditions, sort, orderby) => connection
   .from('articles')
   .leftJoin('comments', 'articles.article_id', 'comments.article_id')
   .where(whereConditions)
-  .orderBy(sort, orderby)
+  .orderBy(sort, orderby || 'desc')
   .groupBy('articles.article_id')
   .returning('*');
 

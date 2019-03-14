@@ -274,5 +274,15 @@ describe('/api', () => {
       .then((res) => {
         expect(res.body.msg).to.eql('Bad Request: Votes Object can only contain one entry');
       }));
+    it('GET /api/articles Bad Queries Sort by a column that doesnt exist', () => request.get('/api/articles?sortby=badsortby')
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Bad Request');
+      }));
+    it('GET /api/articles Bad Queries orderby !== asc or desc', () => request.get('/api/articles?orderby=badorderby')
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Bad Request: Order by should be asc or desc');
+      }));
   });
 });

@@ -10,10 +10,16 @@ exports.sendAllArticles = (req, res, next) => {
 
   const sort = req.query.sortby || 'created_at';
   const orderby = req.query.orderby || 'desc';
-  fetchAllArticles(whereConditions, sort, orderby).then((articles) => {
-    res.status(200).send(articles); // need to destructure this ({ articles }) but will break lots of tests come back to it
-  })
-    .catch(next);
+
+  if (orderby !== 'desc' && orderby !== 'asc') {
+    next({ msg: 'Bad Request: Order by should be asc or desc', status: 400 });
+  } else {
+    fetchAllArticles(whereConditions, sort, orderby).then((articles) => {
+      // console.log(articles)
+      res.status(200).send(articles); // need to destructure this ({ articles }) but will break lots of tests come back to it
+    })
+      .catch(next);
+  }
 };
 
 exports.addArticle = (req, res, next) => {
