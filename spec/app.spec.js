@@ -224,5 +224,31 @@ describe('/api', () => {
       .then((res) => {
         expect(res.body.msg).to.eql('Bad Request');
       }));
+    it('POST /topics test for duplicate entry of primary key slug', () => request.post('/api/topics').send({
+      description: 'Test Desription',
+      slug: 'mitch',
+    }).expect(422)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Key (slug)=(mitch) already exists.');
+      }));
+    it('POST /articles test for posting an author which doesnt exist in the Users table', () => request.post('/api/articles').send({
+      title: 'Living in the shadow of a great man',
+      topic: 'mitch',
+      author: 'ERROR AUTHOR',
+      body: 'I find this existence challenging',
+    }).expect(422)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Key (author)=(ERROR AUTHOR) is not present in table "users".');
+      }));
+    it.only('POST /articles test for posting an topic slug which doesnt exist in the topics table', () => request.post('/api/articles').send({
+      title: 'Living in the shadow of a great man',
+      topic: 'ERROR TOPIC',
+      author: 'butter_bridge',
+      body: 'I find this existence challenging',
+    }).expect(422)
+      .then((res) => {
+        console.log(res.body);
+        expect(res.body.msg).to.eql('Key (topic)=(ERROR TOPIC) is not present in table "topics".');
+      }));
   });
 });

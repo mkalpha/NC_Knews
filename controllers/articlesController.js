@@ -10,9 +10,6 @@ exports.sendAllArticles = (req, res, next) => {
 
   const sort = req.query.sortby || 'created_at';
   const orderby = req.query.orderby || 'desc';
-  // console.log(whereConditions);
-  // console.log(sort);
-  // console.log(orderby);
   fetchAllArticles(whereConditions, sort, orderby).then((articles) => {
     res.status(200).send(articles); // need to destructure this ({ articles }) but will break lots of tests come back to it
   })

@@ -17,8 +17,10 @@ app.use((err, req, res, next) => {
   else next(err);
 });
 
-// app.use((err, req, res, next) => {
-
-// });
+app.use((err, req, res, next) => {
+  const codes = ['23505', '23503'];
+  if (codes.includes(err.code)) res.status(422).send({ status: 422, msg: err.detail || 'Unprocessable Entity' });
+  else next(err);
+});
 
 module.exports = app;
