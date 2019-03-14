@@ -29,7 +29,8 @@ exports.sendArticle = (req, res, next) => {
   const article = req.params;
   fetchSingleArticle(article)
     .then((returnedArticle) => {
-      res.status(200).send({ returnedArticle });
+      if (returnedArticle.length > 0)res.status(200).send({ returnedArticle });
+      else return Promise.reject({ msg: 'Article Not Found', status: 404 });
     })
     .catch(next);
 };

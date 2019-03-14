@@ -240,15 +240,24 @@ describe('/api', () => {
       .then((res) => {
         expect(res.body.msg).to.eql('Key (author)=(ERROR AUTHOR) is not present in table "users".');
       }));
-    it.only('POST /articles test for posting an topic slug which doesnt exist in the topics table', () => request.post('/api/articles').send({
+    it('POST /articles test for posting an topic slug which doesnt exist in the topics table', () => request.post('/api/articles').send({
       title: 'Living in the shadow of a great man',
       topic: 'ERROR TOPIC',
       author: 'butter_bridge',
       body: 'I find this existence challenging',
     }).expect(422)
       .then((res) => {
-        console.log(res.body);
         expect(res.body.msg).to.eql('Key (topic)=(ERROR TOPIC) is not present in table "topics".');
+      }));
+    it('GET /articles:article_id Status 400 when passed an invalid article_id', () => request.get('/api/articles/AAAAA')
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Bad Request');
+      }));
+    it.only('GET /articles:article_id Status 404 when passed a valid article_id but which isnt in the db', () => request.get('/api/articles/999999')
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Not Found');
       }));
   });
 });

@@ -12,7 +12,7 @@ app.all('/*', (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const codes = ['23502'];
+  const codes = ['23502', '22P02'];
   if (codes.includes(err.code)) res.status(400).send({ status: 400, msg: err.msg || 'Bad Request' });
   else next(err);
 });
@@ -20,6 +20,12 @@ app.use((err, req, res, next) => {
 app.use((err, req, res, next) => {
   const codes = ['23505', '23503'];
   if (codes.includes(err.code)) res.status(422).send({ status: 422, msg: err.detail || 'Unprocessable Entity' });
+  else next(err);
+});
+
+app.use((err, req, res, next) => {
+  const status = [404];
+  if (status.includes(err.status)) res.status(404).send({ status: 404, msg: err.detail || 'Not Found' });
   else next(err);
 });
 
