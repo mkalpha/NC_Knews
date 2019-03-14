@@ -21,7 +21,7 @@ exports.fetchSingleArticle = article => connection.select('articles.author', 'ar
   .groupBy('articles.article_id')
   .returning('*');
 
-exports.patchArticle = (votes, article_id) => connection('articles').where('article_id', article_id.article_id).increment('votes', votes.inc_votes).returning('*');
+exports.patchArticle = (votes, article_id) => connection('articles').where('article_id', article_id.article_id).increment('votes', votes.inc_votes || 0).returning('*');
 
 exports.deleteArticle = (article => connection('articles').where('article_id', article.article_id).del()
   .catch(err => console.log(err)));

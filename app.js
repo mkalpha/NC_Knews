@@ -12,8 +12,8 @@ app.all('/*', (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const codes = ['23502', '22P02'];
-  if (codes.includes(err.code)) res.status(400).send({ status: 400, msg: err.msg || 'Bad Request' });
+  const codes = ['23502', '22P02', 400];
+  if (codes.includes(err.code) || codes.includes(err.status)) res.status(400).send({ status: 400, msg: err.msg || 'Bad Request' });
   else next(err);
 });
 

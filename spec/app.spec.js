@@ -254,10 +254,20 @@ describe('/api', () => {
       .then((res) => {
         expect(res.body.msg).to.eql('Bad Request');
       }));
-    it.only('GET /articles:article_id Status 404 when passed a valid article_id but which isnt in the db', () => request.get('/api/articles/999999')
+    it('GET /articles:article_id Status 404 when passed a valid article_id but which isnt in the db', () => request.get('/api/articles/999999')
       .expect(404)
       .then((res) => {
         expect(res.body.msg).to.eql('Not Found');
+      }));
+    it('PATCH /articles:article_id Status 400 when the is no inc_votes on req.body', () => request.patch('/api/articles/1').send({ Dog: 1 })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Invalid Object Key Should Be "inc_votes"');
+      }));
+    it('PATCH /articles:article_id Status 400 where the value is invalid', () => request.patch('/api/articles/1').send({ inc_votes: 'cat' })
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Bad Request: Votes Should Be An Integer');
       }));
   });
 });

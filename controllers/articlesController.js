@@ -38,11 +38,18 @@ exports.sendArticle = (req, res, next) => {
 exports.changeArticle = (req, res, next) => {
   const article_id = req.params;
   const votes = req.body;
-  patchArticle(votes, article_id)
-    .then((returnedArticle) => {
-      res.status(201).send({ returnedArticle });
-    })
-    .catch(next);
+
+  if (!votes.inc_votes) {
+    next({ msg: 'Invalid Object Key Should Be "inc_votes"', status: 400 });
+  } else if (!Number.isNaN(votes.inc_votes)) {
+    next({ msg: 'Bad Request: Votes Should Be An Integer', status: 400 });
+  } else {
+    patchArticle(votes, article_id)
+      .then((returnedArticle) => {
+        res.status(201).send({ returnedArticle });
+      })
+      .catch(next);
+  }
 };
 
 exports.removeArticle = (req, res, next) => {
