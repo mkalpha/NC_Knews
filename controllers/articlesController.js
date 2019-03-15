@@ -75,7 +75,8 @@ exports.getComments = (req, res, next) => {
   const order = req.query.order || 'desc';
   fetchComments(article, sort, order)
     .then((articleComments) => {
-      res.status(200).send({ articleComments });
+      if (articleComments.length > 0) res.status(200).send({ articleComments });
+      else return next({ msg: 'No Comments for this Article', status: 400 });
     })
     .catch(next);
 };

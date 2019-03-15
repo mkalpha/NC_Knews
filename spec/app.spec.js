@@ -294,5 +294,34 @@ describe('/api', () => {
       .then((res) => {
         expect(res.body.msg).to.eql('Bad Request');
       }));
+    it('GET Bad queries aurhor is not in the database', () => request.get('/api/articles/a/comments')
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Bad Request');
+      }));
+    it('GET Bad queries author is in the database but no comments', () => request.get('/api/articles/4/comments')
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('No Comments for this Article');
+      }));
+    it('GET invalid user name for api/users/:username', () => request.get('/api/users/BADNAME')
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Not Found');
+      }));
+    it('POST username that already exists /api/users', () => request.post('/api/users').send({
+      username: 'butter_bridge',
+      avatar_url: '',
+      name: 'test',
+    })
+      .expect(422)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Key (username)=(butter_bridge) already exists.');
+      }));
+    it('POST missing fields for /api/users', () => request.post('/api/users').send({})
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Bad Request');
+      }));
   });
 });

@@ -5,16 +5,21 @@
 -- WHERE articles.article_id = '1'
 -- GROUP BY articles.article_id
 
-SELECT * FROM articles
-WHERE article_id ='1';
+-- SELECT * FROM articles
+-- WHERE article_id ='1';
 
-UPDATE articles
-SET votes = votes + 20
-WHERE article_id ='1';
+-- UPDATE articles
+-- SET votes = votes + 20
+-- WHERE article_id ='1';
 
-SELECT * FROM articles
-WHERE article_id ='1';
+-- SELECT * FROM articles
+-- WHERE article_id ='1';
 
+SELECT * FROM articles;
+
+SELECT * FROM comments;
+
+SELECT * FROM users
 
 
 
