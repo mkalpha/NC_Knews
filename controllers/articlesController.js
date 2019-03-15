@@ -2,11 +2,15 @@ const {
   fetchAllArticles, postArticle, fetchSingleArticle, patchArticle, deleteArticle, fetchComments, postComment,
 } = require('../models/articlesModel');
 
+const { getUser } = require('../models/usersModel');
+
 exports.sendAllArticles = (req, res, next) => {
   const { author, topic } = req.query;
   const whereConditions = {};
+
   if (author) whereConditions['articles.author'] = author;
   if (topic) whereConditions.topic = topic;
+
 
   const sort = req.query.sortby || 'created_at';
   const orderby = req.query.orderby || 'desc';
@@ -15,8 +19,18 @@ exports.sendAllArticles = (req, res, next) => {
     next({ msg: 'Bad Request: Order by should be asc or desc', status: 400 });
   } else {
     fetchAllArticles(whereConditions, sort, orderby).then((articles) => {
-      // console.log(articles)
-      res.status(200).send(articles); // need to destructure this ({ articles }) but will break lots of tests come back to it
+      if (articles.length > 0) {
+        res.status(200).send({ articles });
+      } else {
+        return getUser({ username: author });
+      }
+    }).then((user) => {
+      if (user.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: 'User Not Found',
+        });
+      }
     })
       .catch(next);
   }

@@ -37,73 +37,73 @@ describe('/api', () => {
     it('GET status 200. returns an array', () => request.get('/api/articles')
       .expect(200)
       .then((res) => {
-        expect(res.body[0].created_at).to.eql('2018-11-15T00:00:00.000Z');
-        expect(res.body[0]).to.have.keys('author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count');
+        expect(res.body.articles[0].created_at).to.eql('2018-11-15T00:00:00.000Z');
+        expect(res.body.articles[0]).to.have.keys('author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count');
       }));
     it('GET status 200. results should be default sort of date and ordered by defaults to descending', () => request.get('/api/articles/')
       .expect(200)
       .then((res) => {
-        expect(res.body[0].article_id).to.eql(1);
-        expect(res.body[11].article_id).to.eql(12);
+        expect(res.body.articles[0].article_id).to.eql(1);
+        expect(res.body.articles[11].article_id).to.eql(12);
       }));
     it('GET status 200 QUERIES should filter the articles by the username', () => request.get('/api/articles?author=butter_bridge&orderby=asc')
       .expect(200)
       .then((res) => {
-        expect(res.body[0].author).to.eql('butter_bridge');
-        expect(res.body[2].author).to.eql('butter_bridge');
+        expect(res.body.articles[0].author).to.eql('butter_bridge');
+        expect(res.body.articles[2].author).to.eql('butter_bridge');
       }));
     it('GET status 200 QUERIES should filter by topic', () => {
       request.get('/api/articles?topic=mitch&orderby=asc')
         .expect(200)
         .then((res) => {
-          expect(res.body[0].topic).to.eql('mitch');
-          expect(res.body[8].topic).to.eql('mitch');
+          expect(res.body.articles[0].topic).to.eql('mitch');
+          expect(res.body.articles[8].topic).to.eql('mitch');
         });
     });
     it('GET status 200 QUERIES should be able to sort author - defaults to Date', () => request.get('/api/articles?sortby=author&orderby=asc')
       .expect(200)
       .then((res) => {
-        expect(res.body[0].author).to.eql('butter_bridge');
-        expect(res.body[11].author).to.eql('rogersop');
+        expect(res.body.articles[0].author).to.eql('butter_bridge');
+        expect(res.body.articles[11].author).to.eql('rogersop');
       }));
     it('GET status 200 QUERIES should be able to sort by title - defaults to Date', () => {
       request.get('/api/articles?sortby=title&orderby=asc')
         .expect(200)
         .then((res) => {
-          expect(res.body[0].title).to.eql('A');
-          expect(res.body[11].title).to.eql('Z');
+          expect(res.body.articles[0].title).to.eql('A');
+          expect(res.body.articles[11].title).to.eql('Z');
         });
     });
     it('GET status 200 QUERIES should be able to sort by article_id - defaults to Date', () => {
       request.get('/api/articles?sortby=article_id&orderby=asc')
         .expect(200)
         .then((res) => {
-          expect(res.body[0].article_id).to.eql(1);
-          expect(res.body[11].article_id).to.eql(12);
+          expect(res.body.articles[0].article_id).to.eql(1);
+          expect(res.body.articles[11].article_id).to.eql(12);
         });
     });
     it('GET status 200 QUERIES should be able to sort by topic - defaults to Date', () => {
       request.get('/api/articles?sortby=topic&orderby=asc')
         .expect(200)
         .then((res) => {
-          expect(res.body[0].topic).to.eql('cats');
-          expect(res.body[11].topic).to.eql('mitch');
+          expect(res.body.articles[0].topic).to.eql('cats');
+          expect(res.body.articles[11].topic).to.eql('mitch');
         });
     });
     it('GET status 200 QUERIES should be able to sort by votes - defaults to Date', () => {
       request.get('/api/articles?sortby=votes&orderby=asc')
         .expect(200)
         .then((res) => {
-          expect(res.body[0].votes).to.eql(0);
-          expect(res.body[11].votes).to.eql(100);
+          expect(res.body.articles[0].votes).to.eql(0);
+          expect(res.body.articles[11].votes).to.eql(100);
         });
     });
     it('GET status 200 QUERIES should be able to sort by comment count - defaults to Date', () => {
       request.get('/api/articles?sortby=comment_count&orderby=asc')
         .expect(200)
         .then((res) => {
-          expect(res.body[0].comment_count).to.eql('0');
-          expect(res.body[11].comment_count).to.eql('13');
+          expect(res.body.articles[0].comment_count).to.eql('0');
+          expect(res.body.articles[11].comment_count).to.eql('13');
         });
     });
     it('GET Status 200 params article_id', () => request.get('/api/articles/1')
@@ -322,6 +322,11 @@ describe('/api', () => {
       .expect(400)
       .then((res) => {
         expect(res.body.msg).to.eql('Bad Request');
+      }));
+    it('GET author is not in the database', () => request.get('/api/articles?author=notanauthor')
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Not Found');
       }));
   });
 });
