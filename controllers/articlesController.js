@@ -3,14 +3,15 @@ const {
 } = require('../models/articlesModel');
 
 const { getUser } = require('../models/usersModel');
+const { fetchSingleTopic } = require('../models/topicsModel');
 
 exports.sendAllArticles = (req, res, next) => {
   const { author, topic } = req.query;
   const whereConditions = {};
+  let badRequest = '';
 
   if (author) whereConditions['articles.author'] = author;
   if (topic) whereConditions.topic = topic;
-
 
   const sort = req.query.sortby || 'created_at';
   const orderby = req.query.orderby || 'desc';
@@ -22,16 +23,19 @@ exports.sendAllArticles = (req, res, next) => {
       if (articles.length > 0) {
         res.status(200).send({ articles });
       } else {
-        return getUser({ username: author });
+        if (whereConditions.hasOwnProperty('topic')) {
+          const { topic } = whereConditions;
+          badRequest = 'Topic';
+          return fetchSingleTopic(topic);
+        }
+        const user = { username: author };
+        badRequest = 'User';
+        return getUser(user);
       }
-    }).then((user) => {
-      if (user.length === 0) {
-        return Promise.reject({
-          status: 404,
-          msg: 'User Not Found',
-        });
-      }
-    })
+    }).then(result => Promise.reject({
+      status: 404,
+      msg: `${badRequest} Not Found`,
+    }))
       .catch(next);
   }
 };
@@ -48,8 +52,8 @@ exports.addArticle = (req, res, next) => {
 exports.sendArticle = (req, res, next) => {
   const article = req.params;
   fetchSingleArticle(article)
-    .then((returnedArticle) => {
-      if (returnedArticle.length > 0)res.status(200).send({ returnedArticle });
+    .then((article) => {
+      if (article.length > 0)res.status(200).send({ article });
       else return Promise.reject({ msg: 'Article Not Found', status: 404 });
     })
     .catch(next);

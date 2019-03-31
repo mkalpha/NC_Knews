@@ -17,8 +17,8 @@ describe('/api', () => {
   describe('api/topics', () => {
     it('GET status 200. returns an array of topics with slug and desciption', () => request.get('/api/topics').expect(200)
       .then((res) => {
-        expect(res.body).to.be.an('array');
-        expect(res.body[0]).to.have.keys('slug', 'description');
+        expect(res.body.topics[0]).to.be.an('object');
+        expect(res.body.topics[0]).to.have.keys('slug', 'description');
       }));
     it('POST gives 201 status, returns the new object as it is in db', () => {
       const topicToPost = {
@@ -29,7 +29,7 @@ describe('/api', () => {
         .send(topicToPost)
         .expect(201)
         .then((res) => {
-          expect(res.body).to.have.keys('slug', 'description');
+          expect(res.body.newTopic).to.have.keys('slug', 'description');
         });
     });
   });
@@ -106,10 +106,10 @@ describe('/api', () => {
           expect(res.body.articles[11].comment_count).to.eql('13');
         });
     });
-    it('GET Status 200 params article_id', () => request.get('/api/articles/1')
+    it('GET Status 200 params article', () => request.get('/api/articles/1')
       .expect(200)
       .then((res) => {
-        expect(res.body.returnedArticle[0].article_id).to.eql(1);
+        expect(res.body.article[0].article_id).to.eql(1);
       }));
   });
   describe('/api/articles POST', () => {
@@ -171,6 +171,18 @@ describe('/api', () => {
         });
     });
   });
+  it('Query 404 if topic doesnt exist on articles query', () => request.get('/api/articles?topic=error')
+    .expect(404)
+    .then((res) => {
+      expect(res.body.msg).to.equal('Not Found');
+    }));
+  // it.only('Empty array returned if valid topic but not articles', () => {
+  //   return request.get('/api/articles?topic=test')
+  //     .expect(204)
+  //     .then((res) => {
+  //        console.log(res);
+  //     });
+  // });
   describe('/api/comments PATCH DELETE', () => {
     it('PATCH gives 201  status, updates the comment and returns and returns an object as it will appear in the db', () => {
       const votesObject = { inc_votes: 1000 };
@@ -327,6 +339,26 @@ describe('/api', () => {
       .expect(404)
       .then((res) => {
         expect(res.body.msg).to.eql('Not Found');
+      }));
+    it('BAD METHOD on topics PATCH Status 405', () => request.patch('/api/topics')
+      .expect(405)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Method Not Allowed');
+      }));
+    it('BAD METHOD on topics POST Status 405', () => request.post('/api/comments')
+      .expect(405)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Method Not Allowed');
+      }));
+    it('BAD METHOD on article_id/Comments PATCH Status 405', () => request.patch('/api/articles/1/comments')
+      .expect(405)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Method Not Allowed');
+      }));
+    it('BAD METHOD on userRouter PATCH Status 405', () => request.patch('/api/users')
+      .expect(405)
+      .then((res) => {
+        expect(res.body.msg).to.eql('Method Not Allowed');
       }));
   });
 });

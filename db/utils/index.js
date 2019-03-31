@@ -1,5 +1,5 @@
 function createArticles(arr) {
-  arr.forEach((item) => {
+  arr.map((item) => {
     let createdDate = item.created_at;
     createdDate = new Date(createdDate);
     const psqlYear = createdDate.getFullYear();
@@ -17,7 +17,7 @@ function createArticles(arr) {
 
 function createCommentsDictionary(arr) {
   const result = {};
-  arr.forEach((item, index) => {
+  arr.map((item) => {
     result[item.title] = item.article_id;
   });
 

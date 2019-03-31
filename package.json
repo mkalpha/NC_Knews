@@ -4,7 +4,7 @@
   "description": "## Northcoders News API",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test npm run seed && mocha ./spec/*.spec.js",
+    "test": "mocha ./spec/*.spec.js",
     "lint": "eslint ./ --fix",
     "pre-commit": "npm t",
     "posttest": "npm run lint",
@@ -12,7 +12,9 @@
     "make-migrations": "knex migrate:make",
     "migrate-rollback": "knex migrate:rollback",
     "migrate-latest": "knex migrate:latest",
-    "seed": "knex seed:run"
+    "seed": "knex seed:run",
+    "dev": "nodemon listen.js",
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "knex": "^0.15.2",
+    "nodemon": "^1.18.10",
     "pg": "^7.8.2"
   },
   "devDependencies": {
