@@ -8,7 +8,6 @@ const { fetchSingleTopic } = require('../models/topicsModel');
 exports.sendAllArticles = (req, res, next) => {
   const { author, topic } = req.query;
   const whereConditions = {};
-  let badRequest = '';
 
   if (author) whereConditions['articles.author'] = author;
   if (topic) whereConditions.topic = topic;
@@ -23,19 +22,9 @@ exports.sendAllArticles = (req, res, next) => {
       if (articles.length > 0) {
         res.status(200).send({ articles });
       } else {
-        if (whereConditions.hasOwnProperty('topic')) {
-          const { topic } = whereConditions;
-          badRequest = 'Topic';
-          return fetchSingleTopic(topic);
-        }
-        const user = { username: author };
-        badRequest = 'User';
-        return getUser(user);
+        next({ msg: 'Not Found', status: 404 });
       }
-    }).then(result => Promise.reject({
-      status: 404,
-      msg: `${badRequest} Not Found`,
-    }))
+    })
       .catch(next);
   }
 };
@@ -72,7 +61,7 @@ exports.changeArticle = (req, res, next) => {
   } else {
     patchArticle(votes, article_id)
       .then((returnedArticle) => {
-        res.status(201).send({ returnedArticle });
+        res.status(200).send({ returnedArticle });
       })
       .catch(next);
   }
@@ -90,8 +79,8 @@ exports.removeArticle = (req, res, next) => {
 exports.getComments = (req, res, next) => {
   const article = req.params;
   const sort = req.query.sortby || 'created_at';
-  const order = req.query.order || 'desc';
-  fetchComments(article, sort, order)
+  const orderby = req.query.orderby || 'desc';
+  fetchComments(article, sort, orderby)
     .then((articleComments) => {
       if (articleComments.length > 0) res.status(200).send({ articleComments });
       else return next({ msg: 'No Comments for this Article', status: 400 });

@@ -18,19 +18,20 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const codes = ['23505', '23503'];
-  if (codes.includes(err.code)) res.status(422).send({ status: 422, msg: err.detail || 'Unprocessable Entity' });
+  const codes = ['23505'];
+  if (codes.includes(err.code) || codes.includes(err.status)) res.status(422).send({ status: 422, msg: err.detail || 'Unprocessable Entity' });
   else next(err);
 });
 
 app.use((err, req, res, next) => {
-  const codes = [404];
+  const codes = [404, '23503'];
   if (codes.includes(err.code) || codes.includes(err.status)) res.status(404).send({ status: 404, msg: err.detail || 'Not Found' });
   else next(err);
 });
 
 app.use((req, res, next) => {
-  res.status(500).send({ msg: 'Internal Server Error' });
+  res.status(500)
+    .send({ msg: 'Internal Server Error' });
 });
 
 module.exports = app;

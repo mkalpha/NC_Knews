@@ -7,7 +7,7 @@ exports.changeComment = (req, res, next) => {
   patchComment(votes, comment_id)
 
     .then((returnedComment) => {
-      res.status(201).send({ returnedComment });
+      res.status(200).send({ returnedComment });
     })
     .catch(next);
 };
