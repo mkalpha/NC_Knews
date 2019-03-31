@@ -4,6 +4,7 @@
   "description": "## Northcoders News API",
   "main": "index.js",
   "scripts": {
+    "start": "node listen.js",
     "test": "mocha ./spec/*.spec.js",
     "lint": "eslint ./ --fix",
     "pre-commit": "npm t",
@@ -13,8 +14,8 @@
     "migrate-rollback": "knex migrate:rollback",
     "migrate-latest": "knex migrate:latest",
     "seed": "knex seed:run",
-    "dev": "nodemon listen.js",
-    "start": "node listen.js"
+    "dev": "nodemon listen.js"
+    
   },
   "repository": {
     "type": "git",
