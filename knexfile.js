@@ -25,10 +25,6 @@ const dbConfig = {
       password: 'password',
     },
   },
-  production: {
-    // client: 'pg',
-    connection: process.env.DATABASE_URL
-  }
 };
 
 module.exports = { ...baseConfig, ...dbConfig[ENV] };
