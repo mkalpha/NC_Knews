@@ -176,7 +176,7 @@ describe('/api', () => {
     .then((res) => {
       expect(res.body.msg).to.equal('Not Found');
     }));
-describe('/api/comments PATCH DELETE', () => {
+  describe('/api/comments PATCH DELETE', () => {
     it('PATCH gives 200  status, updates the comment and returns and returns an object as it will appear in the db', () => {
       const votesObject = { inc_votes: 1000 };
       return request.patch('/api/comments/1').send(votesObject)

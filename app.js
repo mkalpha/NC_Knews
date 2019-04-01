@@ -1,9 +1,12 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
 const apiRouter = require('./routers/apiRouter');
+var cors = require('cors')
 
 
 app.use(bodyParser.json());
+
+app.use(cors())
 
 app.use('/api', apiRouter);
 

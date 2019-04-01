@@ -15,7 +15,6 @@
     "migrate-latest": "knex migrate:latest",
     "seed": "knex seed:run",
     "dev": "nodemon listen.js"
-    
   },
   "repository": {
     "type": "git",
@@ -30,6 +29,7 @@
   "homepage": "https://github.com/northcoders/BE2-NC-Knews#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "knex": "^0.15.2",
     "nodemon": "^1.18.10",
