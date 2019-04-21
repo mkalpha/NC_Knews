@@ -129,7 +129,6 @@ PATCH /api/comments/:comment_id
 DELETE /api/comments/:comment_id
 
 GET /api/users
-POST /api/users
 
 GET /api/users/:username
 
