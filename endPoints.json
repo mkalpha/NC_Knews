@@ -1,0 +1,76 @@
+{
+    "/api": {
+      "GET": {
+        "responds with": "A JSON Object of all endpoints and methods"
+      }
+    },
+    "/api/topics": {
+      "GET": {
+        "responds with": "An array of topic objects"
+      },
+      "POST": {
+        "accepts": "A topic object containing unique slug and description",
+        "responds with": "The new topic object"
+      }
+    },
+    "/api/articles": {
+      "GET": {
+        "accepts": "Queries of author, topic, sortby defaults to date, orderby defaults to desc",
+        "responds with": "An array of article objects"
+      },
+      "POST": {
+        "accepts": "An article object containing title, body, topic, username",
+        "responds with": "The posted article object"
+      }
+    },
+    "/api/articles/:article_id": {
+      "GET ": {
+        "responds with": "An article object containing author, title, article_id, body, topic, created_at, votes and a comment_count"
+      },
+      "PATCH": {
+        "accepts": "An object in form of the following { inc_votes: newVote } newVote is an integer",
+        "responds with": "The updated article"
+      },
+      "DELETE": {
+        "responds with": "A status 204 and no content "
+      }
+    },
+    "/api/articles/:article_id/comments": {
+      "GET": {
+        "accepts": "Queries sortby defaults to date, orderby defaults to desc),",
+        "responds with": "array of comment objects for the given article which contains the following keys: comment_id, votes, created_at, author and comment body"
+      },
+      "POST": {
+        "accepts": "A comment object which contains username and body",
+        "responds with": "The posted comment"
+      }
+    },
+    "/api/comments/:comment_id": {
+      "PATCH": {
+        "accepts": "object in form { inc_votes: newVote } newVote is an integer",
+        "responds with": "The updated comment"
+      },
+      "DELETE": {
+        "responds with": "status 204 and no content"
+      }
+    },
+    "/api/users": {
+      "GET": {
+        "responds with": "An array of user objects which contains the username, avatar_url and name"
+      },
+      "POST": {
+        "accepts": "An object containing username, avatar_url and name",
+        "responds with": "The newly posted user object"
+      }
+    },
+    "/api/users/:username": {
+      "GET": {
+        "responds with": "user object containing username, avatar_url, name"
+      }
+    },
+    "/api/users/:username/comments": {
+      "GET": {
+        "responds with": "An array of comment objects"
+      }
+    }
+  }
