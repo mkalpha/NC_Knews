@@ -1,0 +1,41 @@
+Description: NC_Knews - ${self:provider.stage}
+Resources:
+  RDSCluster:
+    type: AWS::RDS::DBCluster
+    properties:
+      MasterUsername: get from secrets manager
+      MasterUserPassword: get from secrets manager
+      DatabaseName: ${self.provider.enviroment.DB_DATABASE}
+      Engine: aurora-mysql
+      EngineMode: serverless
+      EnableHttpEndpoint: true
+      EngineVersion: "5.7"
+      # Need to setup KMS key for now this is false but will need changing to true
+      StorageEncrypted: false
+      # KmsKeyId:
+      ServerlessV2ScalingConfiguration:
+        MaxCapacity: 2
+        MinCapacity: 0.5
+      DBClusterParameterGroupName:
+        Ref: RDSDBClusterParameterGroup
+      DBSubnetGroupName:
+        Ref: DBSubnetGroup
+      VPCSecurityGroupIds:
+        - Ref: RdsSecurityGroup
+
+  RDSDBClusterParameterGroup:
+    Type: "AWS::RDS::DBClusterParameterGroup"
+    Properties:
+      Description: Aurora Cluster Parameter Group for aurora-mysql5.7
+      Family: aurora-mysql5.7
+      Parameters:
+        general_log: "0"
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: AuoraDB SubnetGroup ${self:provider.stage}
+      SubnetIds:
+        -
+
+  RdsSecurityGroup:

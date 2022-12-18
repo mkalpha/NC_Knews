@@ -1,0 +1,25 @@
+service: NC_Knews
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  profile: ${env:PROFILE, default}
+  region: ${env:REGION}
+  stage: ${env:ENV}
+  deploymentBucket:
+    blockPublicAccess: true
+    serverSideEncryption: "AES256"
+  vpc:
+    securityGroupIds:
+      - work this out
+    subnetIds:
+      - work this out
+  environment:
+    STAGE: ${self:provider.stage}
+    DB_DATABASE: ${self:service}-${self:provider.stage}
+
+functions:
+  - ${file(./serverless/functions.yaml)}
+
+resources:
+  - ${file(./serverless/rdb.yaml)}
