@@ -1,7 +1,7 @@
 const { fetchAllEndpoints } = require('../models/apiModel');
 
 exports.endPoints = (req, res, next) => {
-    fetchAllEndpoints()
+  fetchAllEndpoints()
     .then((endpoints) => {
       res.status(200).send({ endpoints });
     })
