@@ -102,10 +102,18 @@ The following commands should be run in your termainal
 ```
 npm run setup-dbs
 
-npm run make-migrations
-
 npm run seed
 ```
+
+To create the tbales and seed the data for a remote DB make sure the connection information for production is in the knex config and run the following
+
+```
+knex migrate:latest --env production
+
+knex seed:run --env production
+```
+
+
 
 ## End Points 
 
