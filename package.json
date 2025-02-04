@@ -9,6 +9,7 @@
     "lint": "eslint ./ --fix",
     "pre-commit": "npm t",
     "posttest": "npm run lint",
+    "setup-dbs2": "docker cp ./db/setup.sql nc_knews_postgres_container:/setup.sql && docker exec -i nc_knews_postgres_container psql -U admin -f /setup.sql && docker exec -it nc_knews_postgres_container psql -U admin -c \"CREATE ROLE dbadmin WITH LOGIN SUPERUSER PASSWORD 'password123';\"",
     "setup-dbs": "psql -f ./db/setup.sql",
     "make-migrations": "knex migrate:make",
     "migrate-rollback": "knex migrate:rollback",
@@ -35,7 +36,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "knex": "^2.3.0",
-    "nodemon": "^2.0.20",
+    "nodemon": "^3.1.9",
     "pg": "^8.7.1"
   },
   "devDependencies": {
@@ -46,9 +47,5 @@
     "husky": "^1.1.4",
     "mocha": "^10.2.0",
     "supertest": "^3.4.2"
-  }, 
-  "engines": {
-    "node": ">=12.x.x <=16.x.x",
-    "npm": ">=6.0.0"
   }
 }

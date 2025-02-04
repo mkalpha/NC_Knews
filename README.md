@@ -2,7 +2,7 @@
 
 Presented here is Northcoders News backend, a RESTful API which provides the backend logic for Northcoders News, a reddit style news aggregation and discussion website, which allows users to Post articles, filter articles by topic, post comments and vote on both articles and comments
 
-## Getting Started 
+## Getting Started
 
 1. Fork the repository
 2. Clone the Fork of this repository to you local machine
@@ -14,7 +14,7 @@ npm init -y
 
 ## Prerequisits
 
-You will need to install the following dependancies 
+You will need to install the following dependancies
 
 ```
     "body-parser": "^1.18.3"
@@ -23,13 +23,14 @@ You will need to install the following dependancies
     "knex": "^0.15.2"
     "pg": "^7.8.2"
 ```
+
 These can be installed using the Node Package Manager, for example:
 
 ```
 npm i body-parser
 ```
 
-The Following Development Dependencies are also required 
+The Following Development Dependencies are also required
 
 ```
     "chai": "^4.2.0",
@@ -49,53 +50,7 @@ npm i chai -D
 
 Northcoders News Backend uses PostgreSQL as it's relational database, you should ensure that PostgreSQL is installed on your local machine. Instructions can be found at the following url https://www.postgresql.org/docs/9.3/tutorial-install.html
 
-## Configuration File
-
-A configuration file will need to be created. The configuration file should be named "knexfile.js" and should be located in the project root folder. The "knexfile.js" is already listed in the .gitignore file and will not be pushed to github.
-
-```javascript
-const ENV = process.env.NODE_ENV || 'development';
-const { DB_URL } = process.env;
-
-const baseConfig = {
-  client: 'pg',
-  migrations: {
-    directory: './db/migrations',
-  },
-  seed: {
-    directory: './seed/seeds.js',
-  },
-};
-
-const dbConfig = {
-  development: {
-    connection: {
-      database: 'nc_news',
-      user: `${Your PSQL Username}`, 
-      password: `${Your PSQL Password}`,
-    },
-  },
-  test: {
-    connection: {
-      database: 'nc_news_test',
-      user: `${Your PSQL Username}`,
-      password: `${Your PSQL Password}`,
-    },
-
-  },
-  production: {
-    client: 'pg',
-    connection: `${process.env.DATABASE_URL}?ssl=true`,
-  },
-
-};
-
-module.exports = { ...baseConfig, ...dbConfig[ENV] };
-```
-
-Please note in both the "connection" and "test" objects, the fields user & password are not required if you are using a Mac, and should be ommited in that case.
-
-##  Initialising and Seeding the NC_News Database
+## Initialising and Seeding the NC_News Database
 
 The following commands should be run in your termainal
 
@@ -105,7 +60,7 @@ npm run setup-dbs
 npm run seed
 ```
 
-To create the tbales and seed the data for a remote DB make sure the connection information for production is in the knex config and run the following
+To create the tables and seed the data for a remote DB make sure the connection information for production is in the knexfile.js and run the following
 
 ```
 knex migrate:latest --env production
@@ -113,9 +68,7 @@ knex migrate:latest --env production
 knex seed:run --env production
 ```
 
-
-
-## End Points 
+## End Points
 
 The Following end Points are available:
 
@@ -144,7 +97,7 @@ GET /api
 
 ```
 
-More detailed information about the methods availble on each end point can be found as a JSON Object at https://nc-knews-andrew-workman.herokuapp.com/api 
+More detailed information about the methods availble on each end point can be found as a JSON Object at https://nc-knews-andrew-workman.herokuapp.com/api
 
 ## Unit Testing
 
@@ -157,9 +110,7 @@ utils.spec.js tests all functions required for seeding the Database
 app.spec.js tests endpoints functionality as well as error handeling
 
 In your terminal:
+
 ```
 npm test
 ```
-
-
-

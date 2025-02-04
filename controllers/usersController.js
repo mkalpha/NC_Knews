@@ -17,9 +17,9 @@ exports.sendNewUser = (req, res, next) => {
 
 exports.sendUser = (req, res, next) => {
   const user = req.params;
-  getUser(user).then((user) => {
-    if (user.length > 0) res.status(200).send({ user });
-    else return next({ msg: 'Error: no such user exists', status: 404 });
+  getUser(user).then((newUser) => {
+    if (newUser.length > 0) return res.status(200).send({ user: newUser });
+    return next({ msg: 'Error: no such user exists', status: 404 });
   })
     .catch(next);
 };

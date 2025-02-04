@@ -1,9 +1,12 @@
 const {
-  fetchAllArticles, postArticle, fetchSingleArticle, patchArticle, deleteArticle, fetchComments, postComment,
+  fetchAllArticles,
+  postArticle,
+  fetchSingleArticle,
+  patchArticle,
+  deleteArticle,
+  fetchComments,
+  postComment,
 } = require('../models/articlesModel');
-
-const { getUser } = require('../models/usersModel');
-const { fetchSingleTopic } = require('../models/topicsModel');
 
 exports.sendAllArticles = (req, res, next) => {
   const { author, topic } = req.query;
@@ -18,13 +21,14 @@ exports.sendAllArticles = (req, res, next) => {
   if (orderby !== 'desc' && orderby !== 'asc') {
     next({ msg: 'Bad Request: Order by should be asc or desc', status: 400 });
   } else {
-    fetchAllArticles(whereConditions, sort, orderby).then((articles) => {
-      if (articles.length > 0) {
-        res.status(200).send({ articles });
-      } else {
-        next({ msg: 'Not Found', status: 404 });
-      }
-    })
+    fetchAllArticles(whereConditions, sort, orderby)
+      .then((articles) => {
+        if (articles.length > 0) {
+          res.status(200).send({ articles });
+        } else {
+          next({ msg: 'Not Found', status: 404 });
+        }
+      })
       .catch(next);
   }
 };
@@ -41,9 +45,9 @@ exports.addArticle = (req, res, next) => {
 exports.sendArticle = (req, res, next) => {
   const article = req.params;
   fetchSingleArticle(article)
-    .then((article) => {
-      if (article.length > 0)res.status(200).send({ article });
-      else return Promise.reject({ msg: 'Article Not Found', status: 404 });
+    .then((newArticle) => {
+      if (newArticle.length > 0) return res.status(200).send({ article: newArticle });
+      return Promise.reject({ msg: 'Article Not Found', status: 404 });
     })
     .catch(next);
 };
@@ -53,11 +57,19 @@ exports.changeArticle = (req, res, next) => {
   const votes = req.body;
 
   if (!votes.inc_votes) {
-    next({ msg: 'Bad Request: Invalid Object Key Should Be "inc_votes"', status: 400 });
+    next({
+      msg: 'Bad Request: Invalid Object Key Should Be "inc_votes"',
+      status: 400,
+    });
+
+  // eslint-disable-next-line
   } else if (isNaN(votes.inc_votes)) {
     next({ msg: 'Bad Request: Votes Should Be An Integer', status: 400 });
   } else if (Object.keys(votes).length > 1) {
-    next({ msg: 'Bad Request: Votes Object can only contain one entry', status: 400 });
+    next({
+      msg: 'Bad Request: Votes Object can only contain one entry',
+      status: 400,
+    });
   } else {
     patchArticle(votes, article_id)
       .then((returnedArticle) => {
@@ -82,8 +94,8 @@ exports.getComments = (req, res, next) => {
   const orderby = req.query.orderby || 'desc';
   fetchComments(article, sort, orderby)
     .then((articleComments) => {
-      if (articleComments.length > 0) res.status(200).send({ articleComments });
-      else return next({ msg: 'No Comments for this Article', status: 400 });
+      if (articleComments.length > 0) return res.status(200).send({ articleComments });
+      return next({ msg: 'No Comments for this Article', status: 400 });
     })
     .catch(next);
 };

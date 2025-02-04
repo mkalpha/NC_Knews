@@ -1,4 +1,5 @@
 function createArticles(arr) {
+  // eslint-disable-next-line
   arr.map((item) => {
     let createdDate = item.created_at;
     createdDate = new Date(createdDate);
@@ -17,6 +18,7 @@ function createArticles(arr) {
 
 function createCommentsDictionary(arr) {
   const result = {};
+  // eslint-disable-next-line
   arr.map((item) => {
     result[item.title] = item.article_id;
   });
